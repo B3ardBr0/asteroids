@@ -7,6 +7,7 @@ from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from shot import Shot
+from explosion import ExplosionParticle
 
 
 def main():
@@ -20,7 +21,8 @@ def main():
     drawable = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
     shots = pygame.sprite.Group()
-
+    
+    ExplosionParticle.containers = (updatable, drawable)
     Asteroid.containers = (asteroids, updatable, drawable)
     Shot.containers = (shots, updatable, drawable)
     AsteroidField.containers = updatable
@@ -52,6 +54,8 @@ def main():
             for shot in shots:
                 if asteroid.collision(shot):
                     shot.kill()
+                    from explosion import create_explosion
+                    create_explosion(asteroid.position.x, asteroid.position.y, asteroid.radius)
                     player.add_score(asteroid.radius)  # Add score before splitting       
                     asteroid.split()   
 

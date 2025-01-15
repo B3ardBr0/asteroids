@@ -22,3 +22,8 @@ SHOT_COLOR = (255, 0, 0)
 SCORE_LARGE_ASTEROID = 20
 SCORE_MEDIUM_ASTEROID = 50
 SCORE_SMALL_ASTEROID = 100
+# Explosion settings
+EXPLOSION_PARTICLE_COUNT = 15  # Number of particles per explosion
+EXPLOSION_PARTICLE_SPEED = 200  # Base speed for particles
+EXPLOSION_PARTICLE_LIFETIME = 0.5  # How long particles last in seconds
+EXPLOSION_PARTICLE_SIZE = 2  # Size of each particle
