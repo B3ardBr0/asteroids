@@ -1,3 +1,4 @@
+import sys
 import pygame
 from constants import *
 from player import Player
@@ -38,7 +39,13 @@ def main():
         for asteroid in asteroids:
             if asteroid.collision(player):
                 print("Game Over")
-                return
+                sys.exit()
+            
+        for asteroid in asteroids:
+            for shot in shots:
+                if asteroid.collision(shot):
+                    shot.kill()  
+                    asteroid.kill()   
 
         screen.fill("black")
 
