@@ -8,7 +8,7 @@ class Player(CircleShape):
         super().__init__(x, y, PLAYER_RADIUS)
         self.rotation = 0
         self.shoot_cooldown = 0
-    
+        self.score = 0
         
     def triangle(self):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -49,3 +49,11 @@ class Player(CircleShape):
     
     def draw(self, screen):
         pygame.draw.polygon(screen, "white", self.triangle(), 2)
+        
+    def add_score(self, asteroid_radius):
+        if asteroid_radius == ASTEROID_MIN_RADIUS * 3:
+            self.score += SCORE_LARGE_ASTEROID
+        elif asteroid_radius == ASTEROID_MIN_RADIUS * 2:
+            self.score += SCORE_MEDIUM_ASTEROID
+        elif asteroid_radius == ASTEROID_MIN_RADIUS:
+            self.score += SCORE_SMALL_ASTEROID        
