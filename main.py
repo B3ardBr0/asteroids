@@ -8,11 +8,10 @@ from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from shot import Shot
 from explosion import ExplosionParticle
+from menu import Menu
 
 
-def main():
-    pygame.init()
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+def game_loop(screen):
     clock = pygame.time.Clock()
     
     font = pygame.font.Font(None, 36)
@@ -46,7 +45,7 @@ def main():
                 player.lives -= 1
                 if player.lives <= 0:
                     print(f"Game Over! Final Score: {player.score}")
-                    sys.exit()
+                    return True
                 else:
                     player.respawn()
             
@@ -73,6 +72,27 @@ def main():
 
         dt = clock.tick(60) / 1000
 
+def main():
+    pygame.init()
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    menu = Menu()
+    
+    while True:
+        screen.fill("black")
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return
+                
+        # Show menu and wait for input
+        menu.draw(screen)
+        pygame.display.flip()
+        
+        if menu.update():  # If space is pressed
+            # Start the game
+            return_to_menu = game_loop(screen)
+            if not return_to_menu:  # If player quit
+                return
 
 if __name__ == "__main__":
     main()
