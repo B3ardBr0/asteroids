@@ -40,9 +40,13 @@ def main():
             obj.update(dt)
             
         for asteroid in asteroids:
-            if asteroid.collision(player):
-                print("Game Over")
-                sys.exit()
+            if asteroid.collision(player) and player.is_vulnerable():
+                player.lives -= 1
+                if player.lives <= 0:
+                    print(f"Game Over! Final Score: {player.score}")
+                    sys.exit()
+                else:
+                    player.respawn()
             
         for asteroid in asteroids:
             for shot in shots:
@@ -57,8 +61,10 @@ def main():
             obj.draw(screen)
 
         score_text = font.render(f"Score: {player.score}", True, "white")
-        screen.blit(score_text, (10, 10))    
-
+        lives_text = font.render(f"Lives: {player.lives}", True, "white")
+        screen.blit(score_text, (10, 10))
+        screen.blit(lives_text, (10, 50))
+        
         pygame.display.flip()
 
         dt = clock.tick(60) / 1000

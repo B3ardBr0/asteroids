@@ -9,7 +9,12 @@ class Player(CircleShape):
         self.rotation = 0
         self.shoot_cooldown = 0
         self.score = 0
-        
+        self.lives = PLAYER_START_LIVES
+        self.respawn_timer = 0 # For invulnerability after respawning
+    
+    def is_vulnerable(self):
+        return self.respawn_timer <= 0    
+
     def triangle(self):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
         right = pygame.Vector2(0, 1).rotate(self.rotation + 90) * self.radius / 1.5
@@ -26,6 +31,9 @@ class Player(CircleShape):
         self.position += forward * PLAYER_SPEED * dt
         
     def update(self, dt):
+        if self.respawn_timer > 0:
+            self.respawn_timer -= dt
+        
         self.shoot_cooldown -= dt
         keys = pygame.key.get_pressed()
         
@@ -39,7 +47,7 @@ class Player(CircleShape):
             self.move(-dt)
         if keys[pygame.K_SPACE]:
             self.shoot()   
-    
+
     def shoot(self):
         if self.shoot_cooldown > 0: 
             return  
@@ -47,8 +55,6 @@ class Player(CircleShape):
         shot = Shot(self.position.x, self.position.y)
         shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
     
-    def draw(self, screen):
-        pygame.draw.polygon(screen, "white", self.triangle(), 2)
         
     def add_score(self, asteroid_radius):
         if asteroid_radius == ASTEROID_MIN_RADIUS * 3:
@@ -57,3 +63,15 @@ class Player(CircleShape):
             self.score += SCORE_MEDIUM_ASTEROID
         elif asteroid_radius == ASTEROID_MIN_RADIUS:
             self.score += SCORE_SMALL_ASTEROID        
+            
+    def respawn(self):
+        self.position.x = PLAYER_SPAWN_X
+        self.position.y = PLAYER_SPAWN_Y
+        self.velocity = pygame.Vector2(0, 0)
+        self.rotation = 0
+        self.respawn_timer = PLAYER_RESPAWN_TIME
+    
+    def draw(self, screen):
+        # Make player flash while invulnerable
+        if self.respawn_timer <= 0 or int(self.respawn_timer * 10) % 2:
+            pygame.draw.polygon(screen, "white", self.triangle(), 2)
