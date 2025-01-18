@@ -1,14 +1,34 @@
 import pygame
 import random
+import math
 from constants import *
 from circleshape import CircleShape
 
 class Asteroid(CircleShape):
     def __init__(self, x, y, radius):
         super().__init__(x, y, radius)
+        self.vertices = self._generate_vertices()
+    
+    def _generate_vertices(self):
+        vertices = []
+        for i in range(ASTEROID_VERTICES):
+            angle = (i / ASTEROID_VERTICES) * 2 * math.pi
+            # Vary the radius randomly
+            random_radius = self.radius * (1 - random.uniform(0, ASTEROID_IRREGULARITY))
+            x = math.cos(angle) * random_radius
+            y = math.sin(angle) * random_radius
+            vertices.append((x, y))
+        return vertices
     
     def draw(self, screen):
-        pygame.draw.circle(screen, "white", self.position, self.radius, 2)
+        # Convert local vertices to screen coordinates
+        screen_vertices = []
+        for x, y in self.vertices:
+            screen_x = self.position.x + x
+            screen_y = self.position.y + y
+            screen_vertices.append((screen_x, screen_y))
+        
+        pygame.draw.polygon(screen, "white", screen_vertices, 2)
         
     def update(self, dt):
         self.position += self.velocity * dt    
