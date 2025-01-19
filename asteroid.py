@@ -25,7 +25,8 @@ class Asteroid(CircleShape):
         return vertices
     
     def draw(self, screen):
-        # Convert local vertices to screen coordinates
+        # Converts local coordinates to screen coordinates
+        # Each vertex is offset by asteroid's position
         screen_vertices = []
         for x, y in self.vertices:
             screen_x = self.position.x + x

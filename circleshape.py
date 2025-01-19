@@ -24,6 +24,10 @@ class CircleShape(pygame.sprite.Sprite):
         return self.position.distance_to(other.position) <= self.radius + other.radius
     
     def wrap_position(self):
+        # Keeps objects within screen bounds by wrapping around edges
+        # When object moves off one edge, it appears on the opposite side
+        # Adds/subtracts screen dimensions based on position and radius
+        
         # Wrap horizontal position
         if self.position.x < -self.radius:
             self.position.x = SCREEN_WIDTH + self.radius
