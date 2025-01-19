@@ -20,6 +20,9 @@ PLAYER_SPAWN_X = SCREEN_WIDTH / 2   # Initial X spawn position
 PLAYER_SPAWN_Y = SCREEN_HEIGHT / 2  # Initial Y spawn position
 PLAYER_SHOOT_SPEED = 500   # Bullet velocity in pixels per second
 PLAYER_SHOOT_COOLDOWN = 0.3  # Minimum time between shots in seconds
+PLAYER_THRUST = 300.0     # Acceleration units per second
+PLAYER_MAX_VELOCITY = 400.0  # Maximum velocity
+PLAYER_DRAG = 0.99        # Friction coefficient (1.0 = no drag)
 
 # Projectile properties
 SHOT_RADIUS = 5           # Size of bullet collision circle
