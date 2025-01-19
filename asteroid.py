@@ -6,10 +6,14 @@ from circleshape import CircleShape
 
 class Asteroid(CircleShape):
     def __init__(self, x, y, radius):
-        super().__init__(x, y, radius)
-        self.vertices = self._generate_vertices()
+        super().__init__(x, y, radius) # Initialize base class
+        self.vertices = self._generate_vertices() # Create polygon points
     
     def _generate_vertices(self):
+        # Creates irregular polygon shape by:
+        # 1. Dividing circle into equal segments
+        # 2. Adding random variation to radius
+        # 3. Converting polar to cartesian coordinates
         vertices = []
         for i in range(ASTEROID_VERTICES):
             angle = (i / ASTEROID_VERTICES) * 2 * math.pi
